@@ -44,7 +44,17 @@ class DataPoint(object):
 	@staticmethod
 	def resetMeans():
 		DataPoint.MEANS=[]
-		
+	
+	#funcao que verifica se ha cromossomas de valor igual e se houver retorna-os numa lista
+	@staticmethod
+	def isTheorem(population):
+		testlist=[]
+		for x in DataPoint.SAMPLE:
+			for i in population:
+				for j in population:
+					if i(x)==j(x): #&& i!=j
+						testlist.append([i,j])
+		return testlist
 		
 				
 			
@@ -74,9 +84,6 @@ class Equality(Chromosome):
   	return self.fitness == self.max_fitness
   	
   max_fitness = property(lambda self: self.REWARD * DataPoint.SAMPLE_SIZE)
-  
-
-		
 		
 
  
@@ -88,16 +95,16 @@ if __name__ == '__name__':
 	
 	for _ in xrange(100): #for a hundred generations
 		DataPoint.setMeans(p) #compute the list of average values on each sample point
-		if p.best.solved:   
+		if DataPoint.isTheorem(p):   
 			break
 		p.cycle()  #if not yet solved move to the next generation
 		DataPoint.resetMeans()  #reset MEANS
 		print
 		print p
 		
-	if p.best.solved:
+	if DataPoint.isTheorem(p):
 		print
-		print 'SOLVED:', p.best
+		print 'SOLVED:', DataPoint.isTheorem(p)
 	
 
 			
