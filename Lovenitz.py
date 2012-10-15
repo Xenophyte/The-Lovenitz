@@ -49,11 +49,14 @@ class DataPoint(object):
 	@staticmethod
 	def isTheorem(population):
 		testlist=[]
-		for x in DataPoint.SAMPLE:
-			for i in population:
-				for j in population:
-					if i(x)==j(x): #&& i!=j
-						testlist.append([i,j])
+		for i in population:
+			for j in population:
+				test = 0
+				for x in DataPoint.SAMPLE: #for the whole set of sampling points, all chromosomes get checked for equalities
+					if i(x) == j(x): #&& i!=j if they both evaluate to the same value at sampling point x
+						test += 1
+					if test == len(DataPoint.SAMPLE): #if all sample points evaluate to the same value
+					testlist.append([i,j])
 		return testlist
 		
 				
@@ -95,7 +98,7 @@ if __name__ == '__name__':
 	
 	for _ in xrange(100): #for a hundred generations
 		DataPoint.setMeans(p) #compute the list of average values on each sample point
-		if DataPoint.isTheorem(p):   
+		if DataPoint.isTheorem(p): #if list of equal chromosomes isnt empty, youre done
 			break
 		p.cycle()  #if not yet solved move to the next generation
 		DataPoint.resetMeans()  #reset MEANS
